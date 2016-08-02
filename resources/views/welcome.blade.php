@@ -8,7 +8,30 @@
                 <div class="panel-heading">Welcome</div>
 
                 <div class="panel-body">
-                    Your Application's Landing Page.
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Hotel</th>
+                                <th width="150">
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        
+                        @foreach($hotel as $key=>$val)
+                        
+                        <tbody>
+                            <tr>
+                                <td>{{$hotel[$key]->name}}</td>
+                                <td>
+                                    <a href="{{url('comments/'.$hotel[$key]->id)}}">
+                                        View Comment
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        @endforeach
+                    </table>
                 </div>
             </div>
         </div>

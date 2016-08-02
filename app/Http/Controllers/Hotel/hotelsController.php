@@ -1,57 +1,90 @@
 <?php
 namespace App\Http\Controllers;
 namespace App\Http\Controllers\Hotel;
-use App\hotel;
 use App\comment;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Input;
 use Validator;
+use App\Hotel;
 
 class hotelsController extends Controller {
 
-    
-     /********************* Display all hotels listing	*****************/
-     
-    public function index()
+    public function __construct()
     {
-        //getting all data from hotels table
-        $hotels = hotel::all();
-        //return result on the welcome blade page
-        return view('welcome', compact('hotel'));
+        $this->middleware(['auth']);
+    }
+    /********************* Add Hotel *****************/
+     
+    public function add_hotel(Request $req){
+        $name = $req->name;
+        $address = $req->address;
+        $price = $req->price;
+
+        $inputs = [
+            'name'        => $name,
+            'address'     => $address,
+            'price'       => $price,
+        ];
+
+        $rules = [
+            'name'        => 'required',
+            'address'     => 'required',
+            'price'       => 'required|numeric',
+
+        ];
+
+        
+        $validation = Validator::make($inputs, $rules);
+
+        if( $validation->fails() ){
+            return redirect()->back()->withInput()->with('errors', $validation->errors() );
+        }
+
+        $hotel = new Hotel;
+
+        $hotel->name = $name;
+        $hotel->address = $address;
+        $hotel->price = $price;
+
+        $hotel->save();
+
+        return redirect()->back()->withInput()->with('message', 'Hotel Added.' );
+    }
+
+    /********************* Post Comment *****************/
+    public function post_comment(Request $req){
+        $description = $req->description;
+        $hotel_id    = $req->hotel_id;
+
+        $inputs = [
+            'description'   => $description,
+           
+        ];
+
+        $rules = [
+            'description'   => 'required',
+    
+        ];
+
+        
+        $validation = Validator::make($inputs, $rules);
+
+        if( $validation->fails() ){
+            return redirect()->back()->withInput()->with('errors', $validation->errors() );
+        }
+
+        $comment = new Comment;
+        $comment->description = $description;
+        $comment->hotel_id = $hotel_id;
+
+        $comment->save();
+
+        return redirect()->back()->withInput()->with('message', 'Comment Added.' );
     }
  
      
-     /*********************** Show all comments of hotel and return response ***************/
-	 
-	 
-     
-    public function showAllComments($id)
-    {
-        //find all comments as per Hotel id basics 
-        $comments = hotel::find($id)->comments;
-        $hotelid = $id;
-        $hotelname = hotel::findOrFail($id);
-        // show all comments listing on detail blade page
-        return view('detail', compact('comments','hotelid','hotelname'));
-    }
-
     
-     /*********************** Post comment ******************/
-    
-    public function postComments(Request $request)
-    {
-         
-         //create object of comment class
-         $comment = new Comment;
-         $comment->description = $request->input('body');
-         $comment->hotel_id = $request->input('hotel_id');
-         //save
-         $comment->save();
-         //return to the previous view
-         return redirect()->back();
-    }
-  
 }
 ?>
