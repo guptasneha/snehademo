@@ -15,10 +15,10 @@
                     @endif
                     <form action="{{url('add_hotel')}}" method="POST" role="form">
                         <input type="hidden" value="{{ csrf_token() }}" name="_token">
-                        <legend>Add</legend>
+                        <legend>Add Hotel</legend>
                     
                         <div class="form-group has-feedback {{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="">Name</label>
+                            <label for="">label</label>
                             <input type="text" class="form-control" name="name" 
                             placeholder="Hotel Name">
                             <span class="help-block">
@@ -27,9 +27,8 @@
                                 </strong>
                             </span>
                         </div>
-                    
                         <div class="form-group has-feedback {{ $errors->has('address') ? ' has-error' : '' }}">
-                            <label for="">Address</label>
+                            <label for="">label</label>
                             <input type="text" class="form-control" name="address" 
                             placeholder="Hotel Address">
                             <span class="help-block">
@@ -39,8 +38,8 @@
                             </span>
                         </div>
                         <div class="form-group has-feedback {{ $errors->has('price') ? ' has-error' : '' }}">
-                            <label for="">Price</label>
-                            <input type="number" class="form-control" name="price" 
+                            <label for="">label</label>
+                            <input type="text" class="form-control" name="price" 
                             placeholder="Hotel Price">
                             <span class="help-block">
                                 <strong>
@@ -48,6 +47,7 @@
                                 </strong>
                             </span>
                         </div>
+                        
                     
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

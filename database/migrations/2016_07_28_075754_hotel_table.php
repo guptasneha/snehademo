@@ -18,7 +18,6 @@ class HotelTable extends Migration
             $table->string('name');
             $table->string('address');
             $table->integer('price');
-            $table->string('image');
             $table->timestamps();
         });
     }
